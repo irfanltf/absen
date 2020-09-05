@@ -38,21 +38,14 @@ class Laporan extends CI_Controller
 		$sampai = $this->input->post('sampai');
 $status = $this->input->post('status');
 
-if ($this->input->post('status') == 'semua') {
+
 
 $query = "
 	SELECT * FROM absensi
-	WHERE `absensi`.`tanggal` BETWEEN '$dari' AND '$sampai' 
+	WHERE `absensi`.`jam_absen` BETWEEN '$dari' AND '$sampai' 
 ";
   
 
-}else{
-  $query = "
-  SELECT * FROM absensi
-	WHERE `absensi`.`tanggal` BETWEEN '$dari' AND '$sampai' 
-  AND `absensi`.`status` =  '$status'
-";
-}
 
 
 
@@ -70,7 +63,7 @@ $donor = $this->db->query($query)->result_array();
         // mencetak string 
         $pdf->Cell(190,9,'Laporan Data Absensi',0,1,'C');
         $pdf->SetFont('Arial','',12);
-        $pdf->Cell(190,9,'Tertanggal '.$dari. ' Sampai '.$sampai,0,1,'C');
+        $pdf->Cell(190,9,'Tanggal '.$dari. ' Sampai '.$sampai,0,1,'C');
         
       
         // Memberikan space kebawah agar tidak terlalu rapat
@@ -81,26 +74,40 @@ $donor = $this->db->query($query)->result_array();
 
 
         // Field
-  $pdf->SetFont('Arial','B',9);
+  $pdf->SetFont('Arial','B',8);
         $pdf->Cell(7,8,'No. ',1,0, 'C');
          $pdf->Cell(25,8,'Nama',1,0, 'C');
         $pdf->Cell(25,8,'Email',1,0, 'C');
-        $pdf->Cell(40,8,'Nama Perusahaan',1,0, 'C');
-        $pdf->Cell(15,8,'Tanggal',1,0, 'C');
-        $pdf->Cell(30,8,'Lokasi',1,0, 'C');
-        $pdf->Cell(30,8,'Pekerjaan',1,0, 'C');
-        $pdf->Cell(20,8,'Status',1,1, 'C');
+        $pdf->Cell(17.5,8,'Tanggal',1,0, 'C');
+        $pdf->Cell(17.5,8,'Jam Absen',1,0, 'C');
+        $pdf->Cell(17.5,8,'Jadwal',1,0, 'C');
+        $pdf->Cell(60,8,'Lokasi',1,0, 'C');
+        $pdf->Cell(21,8,'Keterlambatan',1,1, 'C');
+
+
           $pdf->SetFont('Arial','',6);
 $i=1;
 foreach ($donor as $key) {
 	$pdf->Cell(7,8,$i,1,0, 'C');
 	$pdf->Cell(25,8,$key['nama'],1,0, 'B');
-	$pdf->Cell(25,8,$key['email'],1,0, 'B');
-	$pdf->Cell(40,8,$key['nama_perusahaan'],1,0, 'C');
-	$pdf->Cell(15,8,$key['tanggal'],1,0, 'C');
-	$pdf->Cell(30,8,$key['lokasi'],1,0, 'C');
-	$pdf->Cell(30,8,$key['pekerjaan'],1,0, 'C');
-	$pdf->Cell(20,8,$key['status'],1,1, 'C');
+  $pdf->Cell(25,8,$key['email'],1,0, 'B');
+  $pdf->Cell(17.5,8,date('d - m -  Y ', strtotime( $key['jam_absen'])),1,0, 'B');
+  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_absen'])),1,0, 'B');
+	$pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_jadwal'])),1,0, 'B');
+	$pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
+
+
+$date1 = strtotime( $key['jam_absen']);
+$date2 = strtotime($key['jam_jadwal']);
+;
+$interval = $date1 - $date2;
+$seconds = $interval % 60;
+$minutes = floor(($interval % 3600) / 60);
+$hours = floor($interval / 3600);
+
+
+	$pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+
 $i++;
 }
  
@@ -112,17 +119,15 @@ $i++;
         $pdf->Cell(0,8,'',0,1,'C');
         $pdf->Cell(0,8,'',0,1,'C');
         $pdf->Cell(125,50,'Mengetahui',0,0,);
-        $pdf->Cell(10,50,'Menyetujui',0,0,);
+   
          $pdf->Cell(10,25,'',0,1);
           $pdf->Cell(0,0,'',0,1,'C');
           $pdf->Cell(0,5,'',0,1,'C');
-        $pdf->Cell(125,5,'Kepala....',0,0,);
-        $pdf->Cell(10,5,'Kepala..',0,0,);
+        $pdf->Cell(125,5,'Kepala Pt Sysware',0,0,);
+  
         $pdf->Cell(0,5,'',0,1,'C');
         $pdf->Cell(125,40,'............................',0,0,);
-        $pdf->Cell(10,40,'............................',0,0,);
-
-
+       
 
 
 
@@ -145,19 +150,14 @@ $i++;
 	
 $status = $this->input->post('status');
 
-if ($this->input->post('status') == 'semua') {
+
 
 $query = "
 	SELECT * FROM absensi
 	
-	WHERE month(`tanggal`) =  '$bulan'
+	WHERE month(`jam_absen`) =  '$bulan'
 ";
-}else{
-$query = "
-	SELECT * FROM absensi
-	WHERE month(`tanggal`) =  '$bulan' and status = '$status'
-";
-}
+
 
 
 $donor = $this->db->query($query)->result_array();
@@ -183,46 +183,61 @@ $donor = $this->db->query($query)->result_array();
 
 
 
-  $pdf->SetFont('Arial','B',9);
+  $pdf->SetFont('Arial','B',8);
         $pdf->Cell(7,8,'No. ',1,0, 'C');
          $pdf->Cell(25,8,'Nama',1,0, 'C');
         $pdf->Cell(25,8,'Email',1,0, 'C');
-        $pdf->Cell(40,8,'Nama Perusahaan',1,0, 'C');
-        $pdf->Cell(15,8,'Tanggal',1,0, 'C');
-        $pdf->Cell(30,8,'Lokasi',1,0, 'C');
-        $pdf->Cell(30,8,'Pekerjaan',1,0, 'C');
-        $pdf->Cell(20,8,'Status',1,1, 'C');
+        $pdf->Cell(17.5,8,'Tanggal',1,0, 'C');
+        $pdf->Cell(17.5,8,'Jam Absen',1,0, 'C');
+        $pdf->Cell(17.5,8,'Jadwal',1,0, 'C');
+        $pdf->Cell(60,8,'Lokasi',1,0, 'C');
+        $pdf->Cell(21,8,'Keterlambatan',1,1, 'C');
+
+
           $pdf->SetFont('Arial','',6);
 $i=1;
 foreach ($donor as $key) {
-	$pdf->Cell(7,8,$i,1,0, 'C');
-	$pdf->Cell(25,8,$key['nama'],1,0, 'B');
-	$pdf->Cell(25,8,$key['email'],1,0, 'B');
-	$pdf->Cell(40,8,$key['nama_perusahaan'],1,0, 'C');
-	$pdf->Cell(15,8,$key['tanggal'],1,0, 'C');
-	$pdf->Cell(30,8,$key['lokasi'],1,0, 'C');
-	$pdf->Cell(30,8,$key['pekerjaan'],1,0, 'C');
-	$pdf->Cell(20,8,$key['status'],1,1, 'C');
+  $pdf->Cell(7,8,$i,1,0, 'C');
+  $pdf->Cell(25,8,$key['nama'],1,0, 'B');
+  $pdf->Cell(25,8,$key['email'],1,0, 'B');
+  $pdf->Cell(17.5,8,date('d - m -  Y ', strtotime( $key['jam_absen'])),1,0, 'B');
+  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_absen'])),1,0, 'B');
+  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_jadwal'])),1,0, 'B');
+  $pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
+
+
+$date1 = strtotime( $key['jam_absen']);
+$date2 = strtotime($key['jam_jadwal']);
+;
+$interval = $date1 - $date2;
+$seconds = $interval % 60;
+$minutes = floor(($interval % 3600) / 60);
+$hours = floor($interval / 3600);
+
+
+  $pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+
 $i++;
 }
+ 
 
 
      	
+
+      
         $pdf->Cell(10,25,'',0,1);
         $pdf->SetFont('Arial','',12);
         $pdf->Cell(0,8,'',0,1,'C');
         $pdf->Cell(0,8,'',0,1,'C');
         $pdf->Cell(125,50,'Mengetahui',0,0,);
-        $pdf->Cell(10,50,'Menyetujui',0,0,);
+   
          $pdf->Cell(10,25,'',0,1);
           $pdf->Cell(0,0,'',0,1,'C');
           $pdf->Cell(0,5,'',0,1,'C');
-        $pdf->Cell(125,5,'Kepala....',0,0,);
-        $pdf->Cell(10,5,'Kepala..',0,0,);
+        $pdf->Cell(125,5,'Kepala Pt Sysware',0,0,);
+  
         $pdf->Cell(0,5,'',0,1,'C');
         $pdf->Cell(125,40,'............................',0,0,);
-        $pdf->Cell(10,40,'............................',0,0,);
-
 
 
 
@@ -243,18 +258,13 @@ $i++;
 
 	$status = $this->input->post('status');
 
-if ($this->input->post('status') == 'semua') {
+
 
 $query = "
  SELECT * FROM absensi
-	WHERE year(`tanggal`) =  '$tahun'
+	WHERE year(`jam_absen`) =  '$tahun'
 ";
-}else{
-$query = "
-	SELECT * FROM absensi
-	WHERE year(`tanggal`) =  '$tahun' and status = '$status'
-";
-}
+
 
 
 
@@ -282,46 +292,60 @@ $donor = $this->db->query($query)->result_array();
 
 
 
-  $pdf->SetFont('Arial','B',9);
+   $pdf->SetFont('Arial','B',8);
         $pdf->Cell(7,8,'No. ',1,0, 'C');
          $pdf->Cell(25,8,'Nama',1,0, 'C');
         $pdf->Cell(25,8,'Email',1,0, 'C');
-        $pdf->Cell(40,8,'Nama Perusahaan',1,0, 'C');
-        $pdf->Cell(15,8,'Tanggal',1,0, 'C');
-        $pdf->Cell(30,8,'Lokasi',1,0, 'C');
-        $pdf->Cell(30,8,'Pekerjaan',1,0, 'C');
-        $pdf->Cell(20,8,'Status',1,1, 'C');
+        $pdf->Cell(17.5,8,'Tanggal',1,0, 'C');
+        $pdf->Cell(17.5,8,'Jam Absen',1,0, 'C');
+        $pdf->Cell(17.5,8,'Jadwal',1,0, 'C');
+        $pdf->Cell(60,8,'Lokasi',1,0, 'C');
+        $pdf->Cell(21,8,'Keterlambatan',1,1, 'C');
+
+
           $pdf->SetFont('Arial','',6);
 $i=1;
 foreach ($donor as $key) {
-	$pdf->Cell(7,8,$i,1,0, 'C');
-	$pdf->Cell(25,8,$key['nama'],1,0, 'B');
-	$pdf->Cell(25,8,$key['email'],1,0, 'B');
-	$pdf->Cell(40,8,$key['nama_perusahaan'],1,0, 'C');
-	$pdf->Cell(15,8,$key['tanggal'],1,0, 'C');
-	$pdf->Cell(30,8,$key['lokasi'],1,0, 'C');
-	$pdf->Cell(30,8,$key['pekerjaan'],1,0, 'C');
-	$pdf->Cell(20,8,$key['status'],1,1, 'C');
+  $pdf->Cell(7,8,$i,1,0, 'C');
+  $pdf->Cell(25,8,$key['nama'],1,0, 'B');
+  $pdf->Cell(25,8,$key['email'],1,0, 'B');
+  $pdf->Cell(17.5,8,date('d - m -  Y ', strtotime( $key['jam_absen'])),1,0, 'B');
+  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_absen'])),1,0, 'B');
+  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_jadwal'])),1,0, 'B');
+  $pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
+
+
+$date1 = strtotime( $key['jam_absen']);
+$date2 = strtotime($key['jam_jadwal']);
+;
+$interval = $date1 - $date2;
+$seconds = $interval % 60;
+$minutes = floor(($interval % 3600) / 60);
+$hours = floor($interval / 3600);
+
+
+  $pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+
 $i++;
 }
+ 
 
 
-     	
+ 
+      
         $pdf->Cell(10,25,'',0,1);
         $pdf->SetFont('Arial','',12);
         $pdf->Cell(0,8,'',0,1,'C');
         $pdf->Cell(0,8,'',0,1,'C');
         $pdf->Cell(125,50,'Mengetahui',0,0,);
-        $pdf->Cell(10,50,'Menyetujui',0,0,);
+   
          $pdf->Cell(10,25,'',0,1);
           $pdf->Cell(0,0,'',0,1,'C');
           $pdf->Cell(0,5,'',0,1,'C');
-        $pdf->Cell(125,5,'Kepala....',0,0,);
-        $pdf->Cell(10,5,'Kepala..',0,0,);
+        $pdf->Cell(125,5,'Kepala Pt Sysware',0,0,);
+  
         $pdf->Cell(0,5,'',0,1,'C');
         $pdf->Cell(125,40,'............................',0,0,);
-        $pdf->Cell(10,40,'............................',0,0,);
-
 
 
 

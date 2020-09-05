@@ -1,52 +1,65 @@
- <div class="modal-content">
+
       <div class="modal-header">
-        <h5 class="modal-title" id="newmenumodal">Add New</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <h1 class="modal-title" id="newmenumodal">Absen</h1>
+       
+         
         </button>
       </div>
       <form action="<?php echo base_url('absen/add'); ?>" method="post">
-      <div class="modal-body">
+        <div class="row">
+            <div class="col-6">
+                
+  
         <div class="form-group">
-	    <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama" value="<?php echo $this->session->userdata('name') ?>"required="" readonly>
-	  </div>
-	   <div class="form-group">
-	    <input type="text" class="form-control" id="email" name="email" placeholder="email" value="<?php echo $this->session->userdata('email') ?>"required="" readonly> 
-	  </div>
-	   <div class="form-group">
-	    <input type="text" class="form-control" id="nama_perusahaan" name="nama_perusahaan" placeholder="Masukan Nama Perusahaan" required="">
-	  </div>
+            <label>Nama</label>
+        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama" value="<?php echo $this->session->userdata('name') ?>"required="" readonly>
+      </div>
+            </div>
 
-	   <div class="form-group">
-	    <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" placeholder="Masukan pekerjaan" required="">
-	  </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label>Email</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="email" value="<?php echo $this->session->userdata('email') ?>"required="" readonly> 
+      </div>
+            </div>
+        </div>
+	   
+       <label>Lokasi</label><br>
            <div class="form-group">
         <input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Masukan lokasi" required="" readonly="">
       </div>
-	  <div class="col-md-12">
-                    <label>Lokasi</label><br>
-                    <div class="form-group col-md-6">
+      <div class="row">
+          
+    
+                    <div class="col-6">
+                        <div class="form-group">
                         <label>Latitude</label>
                         <input type="text" class="form-control input-sm" name='latitude' id='latbox' readonly>
                     </div>
-                    <div class="form-group col-md-6">
+                    </div>
+
+                    <div class="col-6">
+   <div class="form-group">
                         <label>Longitude</label>
                         <input type="text" class="form-control input-sm" name='longitude' id='lngbox' readonly>
                     </div>
+                    </div>
+                    
+                 
 
-                </div>
+
       </div>
       <div class="col-md-12">
 	      	<div class="portlet light">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-helper"><i style="font-size:11px">Drag picker untuk memindahkan titik lokasi</i></span>
+	            <!-- <span class="caption-helper"><i style="font-size:12px">Drag picker untuk memindahkan titik lokasi</i></span> -->
 	        </div>
 	        <div class="actions">
 	            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
 	        </div>
 	    </div>
-	    <div class="portlet-body" style="height: auto;">
+	    <div class="portlet-body" style="height: 500px;">
 	        <div id="map" class="map"></div>
 	        <div id="marker" title="Marker"></div>
 	    </div>
@@ -54,11 +67,11 @@
       </div>
 
       <div class="modal-footer">
-        <a href="<?php echo base_url('absen') ?>" class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <a href="<?php echo base_url('absen') ?>" class="btn btn-dark" data-dismiss="modal">Kembali</a>
+        <button type="submit" class="btn btn-success">Submit</button>
       </div>
        </form>
-    </div>
+
 
     
     <script type="text/javascript">   
@@ -92,7 +105,7 @@ const washingtonLonLat = [lng, lat];
         ],
         view: new ol.View({
             center: pos,
-            zoom: 13
+            zoom: 14
         }),
         target: 'map'
     });
@@ -180,7 +193,7 @@ const washingtonLonLat = [lng, lat];
     #map {
         width: 100%;
         height: 100%;
-        border: 1px solid;
+        border: 5px green solid;
     }
 
     /* #map {
@@ -190,8 +203,9 @@ const washingtonLonLat = [lng, lat];
     #marker {
         width: 15px;
         height: 15px;
-        border: 2px solid;
-        background-color: red;
+        border: 3px solid;
+        border-radius: 50%;
+        background-color: green;
         /* opacity: 0.5; */
         cursor: move;
     }

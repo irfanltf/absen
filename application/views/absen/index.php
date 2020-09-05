@@ -20,11 +20,13 @@
           	<table class="table table-hover">
 			  <thead>
 			    <tr>
-			      <th scope="col">#</th>
-			      <th scope="col">Tanggal</th>
-			      <th scope="col">Lokasi</th>
-			      <th scope="col">Nama Pekerjaan</th>
-			      <th scope="col">Status</th>
+			      <th scope="col">No</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Jam Absen</th>
+			      <th scope="col">Jadwal</th>
+			      <th scope="col">Keterlambatan</th>
+            <th scope="col">Lokasi</th>
+    
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -32,15 +34,28 @@
 			  	<?php foreach ($absen as $m) { ?>
 			    <tr>
 			      <th scope="row"><?php echo $i; ?></th>
-			      <td><?php echo $m['tanggal']; ?></td>
+            <td><?php echo date('d - m -  Y ', strtotime( $m['jam_absen'])); ?></td>
+            <td><?php echo date('H:i ', strtotime( $m['jam_absen'])); ?></td>
+			      <td><?php echo date('H:i ', strtotime( $m['jam_jadwal'])); ?></td>
 			      <td><?php echo $m['lokasi']; ?></td>
-			      <td><?php echo $m['pekerjaan']; ?></td>
+			      
 			      <td>
-			      	<span href="" class="badge <?php if($m['status'] == 'selesai'){ echo 'badge-success';}else{echo 'badge-warning';} ?>">
+<?php   
 
-			      <?php echo $m['status']; ?>
+$date1 = strtotime( $m['jam_absen']);
+$date2 = strtotime($m['jam_jadwal']);
+;
+$interval = $date1 - $date2;
+$seconds = $interval % 60;
+$minutes = floor(($interval % 3600) / 60);
+$hours = floor($interval / 3600);
+echo $hours." jam ".$minutes. 'menit';
+
+?>
+
+
+              
 			      	
-			      </span>
 			  </td>
 			      
 			    </tr>

@@ -82,7 +82,7 @@ public function add_run()
 				'email' => htmlspecialchars($this->input->post('email', true)),
 				'tgl_lahir' => htmlspecialchars($this->input->post('tgl_lahir', true)),
 				'jabatan' => htmlspecialchars($this->input->post('jabatan', true)),
-				'image' => 'default.jpg',
+				'image' => 'default.png',
 				'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
 				'role_id' => htmlspecialchars($this->input->post('role_id', true)),
 				'is_active' => 1,
@@ -224,4 +224,53 @@ public function add_run()
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Access Changed</div>');
 	}
 
+
+public function jadwal()
+	{
+		$data['title'] = 'Jadwal';
+		$data['user']=$this->db->get_where('user', ['email' =>
+		$this->session->userdata('email')])->row_array();
+
+		$data['waktu'] = $this->db->get('jadwal')->result_array();
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar', $data);
+		$this->load->view('templates/topbar', $data);
+		$this->load->view('admin/jadwal', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function editjadwal($id)
+	{
+		$data['title'] = 'Jadwal';
+		$data['user']=$this->db->get_where('user', ['email' =>
+		$this->session->userdata('email')])->row_array();
+
+		$data['waktu'] = $this->db->get_where('jadwal', ['id'=> $id])->row_array();
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar', $data);
+		$this->load->view('templates/topbar', $data);
+		$this->load->view('admin/editjadwal', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function update_jadwal()
+	{
+	
+
+	
+	$data = [
+
+			'waktu' => htmlspecialchars($this->input->post('waktu', true)),
+		
+			];
+
+			$this->db->where('id',$this->input->post('id', true)) ;
+			$this->db->update('jadwal', $data);
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Changed</div>');
+		redirect('admin/jadwal');
+
+	}
+	
 }

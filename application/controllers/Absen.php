@@ -12,7 +12,7 @@ class Absen extends CI_Controller
 	
 	public function index()
 	{
-		$data['title'] = 'Absensi Pekerjaan';
+		$data['title'] = 'Isi Absen';
 		$data['user']=$this->db->get_where('user', ['email' =>
 		$this->session->userdata('email')])->row_array();
 
@@ -29,24 +29,24 @@ class Absen extends CI_Controller
 		
 	}
 
-		public function lihat()
-	{
-		$data['title'] = 'Absensi Pekerjaan';
-		$data['user']=$this->db->get_where('user', ['email' =>
-		$this->session->userdata('email')])->row_array();
+	// 	public function lihat()
+	// {
+	// 	$data['title'] = 'Absensi Pekerjaan';
+	// 	$data['user']=$this->db->get_where('user', ['email' =>
+	// 	$this->session->userdata('email')])->row_array();
 
-		$data['absen'] = $this->db->get_where('absensi')->result_array();
-
-
+	// 	$data['absen'] = $this->db->get_where('absensi')->result_array();
 
 
-		$this->load->view('templates/header', $data);
-		$this->load->view('templates/sidebar', $data);
-		$this->load->view('templates/topbar', $data);
-		$this->load->view('absen_admin/index', $data);
-		$this->load->view('templates/footer');
+
+
+	// 	$this->load->view('templates/header', $data);
+	// 	$this->load->view('templates/sidebar', $data);
+	// 	$this->load->view('templates/topbar', $data);
+	// 	$this->load->view('absen_admin/index', $data);
+	// 	$this->load->view('templates/footer');
 		
-	}
+	// }
 
 public function add_lihat(){
 			$data['title'] = 'Absensi Pekerjaan';
@@ -67,19 +67,16 @@ public function add_lihat(){
 	public function add(){
 
 		
-		
+		$w = $this->db->get_where('jadwal', ['id' => 1])->row();
 
 		
 			$data = [
 				'nama' => $this->input->post('nama'),
 				'email' => $this->input->post('email'),
-				'nama_perusahaan' => $this->input->post('nama_perusahaan'),
-				'tanggal' => date('Y-m-d'),
+				'lokasi' => $this->input->post('lokasi'),
 				'latitude' => $this->input->post('latitude'),
 				'longitude' => $this->input->post('longitude'),
-				'lokasi' => $this->input->post('lokasi'),
-				'pekerjaan' => $this->input->post('pekerjaan'),
-				'status' => 'pengajuan'
+				'jam_jadwal' => $w->waktu
 			];
 			$this->db->insert('absensi', $data);
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Success Added </div>');
