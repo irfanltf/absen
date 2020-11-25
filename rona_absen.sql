@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 05 Sep 2020 pada 22.56
+-- Waktu pembuatan: 25 Nov 2020 pada 08.41
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -90,10 +90,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `name`, `email`, `tgl_lahir`, `jabatan`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
 (4, 'admin', 'admin@gmail.com', '2000-03-09', 'System Enginer', 'WhatsApp_Image_2019-04-13_at_09_25_36.jpg', '$2y$10$7epJkvb3dV4QHbQoYDT38eKOMhIx0OloFsn0oCx47looqen8xeHPK', 1, 1, 1552725364),
-(10, 'junior', 'junior@gmail.com', '1978-09-10', 'System Enginer', 'default.jpg', '$2y$10$P6dbm4XcP2tZuF3wwuGxeOHmAmzEsX8xoZRCizRfheyeSyRFNMioy', 3, 1, 1556113386),
-(11, 'joni panggabean', 'mega@gmail.com', '2020-08-14', 'System Enginer', 'default.jpg', '$2y$10$hoEoHA4eC8gqE47uV0aba.TgC080/LCG9pHCgT/8mjF60tf2j9PHm', 2, 1, 1596967892),
+(10, 'junior', 'junior@gmail.com', '1978-09-10', 'System Enginer', 'default.jpg', '$2y$10$7epJkvb3dV4QHbQoYDT38eKOMhIx0OloFsn0oCx47looqen8xeHPK', 3, 1, 1556113386),
+(11, 'joni panggabean', 'mega@gmail.com', '2020-08-14', 'System Enginer', 'default.jpg', '$2y$10$7epJkvb3dV4QHbQoYDT38eKOMhIx0OloFsn0oCx47looqen8xeHPK', 2, 1, 1596967892),
 (21, 'irfan', 'iluthfi469@gmail.com', '2020-09-18', 'Network Security', 'B5Y-Ww7m.jpg', '$2y$10$7epJkvb3dV4QHbQoYDT38eKOMhIx0OloFsn0oCx47looqen8xeHPK', 2, 1, 1599022052),
-(23, 'rona', 'Rona@gmail.com', '2020-09-12', 'Network Security', 'chris-lee-70l1tDAI6rM-unsplash.jpg', '$2y$10$eYyC4ZNyW226hJewF4l3guYTYfhdtRFh5YiUoOz8S/kk4wz8TzOyq', 2, 1, 1599286987);
+(23, 'rona', 'Rona@gmail.com', '2020-09-12', 'Network Security', 'chris-lee-70l1tDAI6rM-unsplash.jpg', '$2y$10$7epJkvb3dV4QHbQoYDT38eKOMhIx0OloFsn0oCx47looqen8xeHPK', 2, 1, 1599286987);
 
 -- --------------------------------------------------------
 
