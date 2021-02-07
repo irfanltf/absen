@@ -17,5 +17,14 @@
   <link rel="stylesheet" href="<?php echo base_url()?>assets/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+<link rel="icon" href="<?php echo base_url('asset/img/logo.png')?>">
+  <style type="text/css">
+    
+    .login-page{
+      background-image: url('<?=  base_url('asset/img/bg.jpg')?>');
+
+    }
+
+  </style>
 </head>
 <body class="hold-transition login-page">

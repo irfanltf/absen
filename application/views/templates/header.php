@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/fontawesome-free/css/all.min.css')?>">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')?>">
-
+<link rel="icon" href="<?php echo base_url('asset/img/logo.png')?>">
   
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/adminlte.min.css')?>">

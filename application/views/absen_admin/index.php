@@ -26,8 +26,8 @@
             <th scope="col">Tanggal</th>
             <th scope="col">Jam Absen</th>
 			      <th scope="col">Jadwal</th>
-			      <th scope="col">Keterlambatan</th>
-            <th scope="col">Lokasi</th>
+			      <th scope="col">Lokasi</th>
+            <th scope="col">Keterlambatan</th>
     
 			    </tr>
 			  </thead>

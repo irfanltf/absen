@@ -272,5 +272,53 @@ public function jadwal()
 		redirect('admin/jadwal');
 
 	}
+	public function add_role()
+	{
+		$role = $this->input->post('role');
+	
+
+
+		$data = [
+			'role' => $role
+		];
+		$this->db->insert('user_role', $data);
+		redirect('admin/role');
+
+	}
+	public function editrole($id)
+	{
+		$data['user']=$this->db->get_where('user', ['email' =>$this->session->userdata('email')])->row_array();
+		$data['title'] = 'Edit Role';
+		$data['role'] = $this->db->get_where('user_role', ['id' =>$id])->row();
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar', $data);
+		$this->load->view('templates/topbar', $data);
+		$this->load->view('admin/editrole', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function editrole_save()
+	{
+		$role = $this->input->post('role');
+		$id = $this->input->post('id');
+
+
+		$data = [
+			'role' => $role,
+		];
+		$this->db->where('id', $id);
+		$this->db->update('user_role', $data);
+		redirect('admin/role');
+
+	}
+	public function deleterole($id)
+	{
+
+		$this->db->where('id', $id);
+		$this->db->delete('user_role');
+		redirect('admin/role');
+
+	}
 	
 }

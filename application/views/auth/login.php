@@ -4,7 +4,7 @@
   <div class="card">
     <center><?php echo $this->session->flashdata('message');?></center></div>
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Silahkan Login dengan Akun Anda</p>
+      <p class="login-box-msg">PT. SYSWARE INDONESIA</p>
 
       <form class="user" method="post" action="<?php echo  base_url('auth'); ?>">
         <div class="input-group mb-3">

@@ -34,8 +34,8 @@
 			      <td><?php echo $r['role']; ?></td>
 			      <td>
               <a href="<?php echo base_url('admin/roleaccess/').$r['id']; ?>" class="badge badge-pill badge-warning">Acces</a>
-			      	<a href="" class="badge badge-pill badge-success">Edit</a> |
-			      	<a href="" class="badge badge-pill badge-danger">Delete</a>
+			         <a href="<?php echo base_url('admin/editrole/').$r['id']; ?>" class="badge badge-pill badge-success">Edit</a> |
+              <a href="<?php echo base_url('admin/deleterole/').$r['id']; ?>" class="badge badge-pill badge-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
 
 			      </td>
 			    </tr>
@@ -68,7 +68,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?php echo base_url('admin/role'); ?>" method="post">
+      <form action="<?php echo base_url('admin/add_role'); ?>" method="post">
       <div class="modal-body">
         <div class="form-group">
 	    <input type="text" class="form-control" id="role" name="role" placeholder="Role Name">
