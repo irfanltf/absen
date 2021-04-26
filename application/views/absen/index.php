@@ -45,11 +45,17 @@
 $date1 = strtotime( $m['jam_absen']);
 $date2 = strtotime($m['jam_jadwal']);
 ;
-$interval = $date1 - $date2;
-$seconds = $interval % 60;
-$minutes = floor(($interval % 3600) / 60);
-$hours = floor($interval / 3600);
+// $interval = $date1 - $date2;
+// $seconds = $interval % 60;
+$minutes = floor(($m['rentan']  % 3600) / 60);
+$hours = floor($m['rentan'] / 3600);
+
+if ($hours <= 0) {
+  echo "tepat waktu";
+}else{
+
 echo $hours." jam ".$minutes. 'menit';
+}
 
 ?>
 

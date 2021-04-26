@@ -16,7 +16,7 @@ class Absen extends CI_Controller
 		$data['user']=$this->db->get_where('user', ['email' =>
 		$this->session->userdata('email')])->row_array();
 
-		$data['absen'] = $this->db->get('absensi')->result_array();
+		$data['absen'] = $this->db->get_where('sec_absen', ['email' => $this->session->userdata('email')])->result_array();
 
 
 
