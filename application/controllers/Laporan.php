@@ -41,8 +41,8 @@ $status = $this->input->post('status');
 
 
 $query = "
-	SELECT * FROM absensi
-	WHERE `absensi`.`jam_absen` BETWEEN '$dari' AND '$sampai' 
+	SELECT * FROM sec_absen
+	WHERE `sec_absen`.`jam_absen` BETWEEN '$dari' AND '$sampai' 
 ";
   
 
@@ -80,7 +80,7 @@ $donor = $this->db->query($query)->result_array();
         $pdf->Cell(25,8,'Email',1,0, 'C');
         $pdf->Cell(17.5,8,'Tanggal',1,0, 'C');
         $pdf->Cell(17.5,8,'Jam Absen',1,0, 'C');
-        $pdf->Cell(17.5,8,'Jadwal',1,0, 'C');
+        $pdf->Cell(17.5,8,'Absen',1,0, 'C');
         $pdf->Cell(60,8,'Lokasi',1,0, 'C');
         $pdf->Cell(21,8,'Keterlambatan',1,1, 'C');
 
@@ -88,25 +88,28 @@ $donor = $this->db->query($query)->result_array();
           $pdf->SetFont('Arial','',6);
 $i=1;
 foreach ($donor as $key) {
-	$pdf->Cell(7,8,$i,1,0, 'C');
-	$pdf->Cell(25,8,$key['nama'],1,0, 'B');
+  $pdf->Cell(7,8,$i,1,0, 'C');
+  $pdf->Cell(25,8,$key['nama'],1,0, 'B');
   $pdf->Cell(25,8,$key['email'],1,0, 'B');
   $pdf->Cell(17.5,8,date('d - m -  Y ', strtotime( $key['jam_absen'])),1,0, 'B');
   $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_absen'])),1,0, 'B');
-	$pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_jadwal'])),1,0, 'B');
-	$pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
+  $pdf->Cell(17.5,8, $key['jenis_absen'] ,1,0, 'B');
+  $pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
 
 
 $date1 = strtotime( $key['jam_absen']);
 $date2 = strtotime($key['jam_jadwal']);
 ;
-$interval = $date1 - $date2;
-$seconds = $interval % 60;
-$minutes = floor(($interval % 3600) / 60);
-$hours = floor($interval / 3600);
+$minutes = floor(($key['rentan']  % 3600) / 60);
+$hours = floor($key['rentan'] / 3600);
 
 
-	$pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+if ($hours <= 0 && $minutes <= 15) {
+  $pdf->Cell(21,8, 'tepat waktu',1,1, 'C');
+}else{
+  $pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+}
+
 
 $i++;
 }
@@ -146,14 +149,10 @@ $i++;
 		$bulan = date('m');
 		$bulans = date('F');
 
-		
-	
 $status = $this->input->post('status');
 
-
-
 $query = "
-	SELECT * FROM absensi
+	SELECT * FROM sec_absen
 	
 	WHERE month(`jam_absen`) =  '$bulan'
 ";
@@ -189,7 +188,7 @@ $donor = $this->db->query($query)->result_array();
         $pdf->Cell(25,8,'Email',1,0, 'C');
         $pdf->Cell(17.5,8,'Tanggal',1,0, 'C');
         $pdf->Cell(17.5,8,'Jam Absen',1,0, 'C');
-        $pdf->Cell(17.5,8,'Jadwal',1,0, 'C');
+        $pdf->Cell(17.5,8,'Absen',1,0, 'C');
         $pdf->Cell(60,8,'Lokasi',1,0, 'C');
         $pdf->Cell(21,8,'Keterlambatan',1,1, 'C');
 
@@ -202,20 +201,23 @@ foreach ($donor as $key) {
   $pdf->Cell(25,8,$key['email'],1,0, 'B');
   $pdf->Cell(17.5,8,date('d - m -  Y ', strtotime( $key['jam_absen'])),1,0, 'B');
   $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_absen'])),1,0, 'B');
-  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_jadwal'])),1,0, 'B');
+  $pdf->Cell(17.5,8, $key['jenis_absen'] ,1,0, 'B');
   $pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
 
 
 $date1 = strtotime( $key['jam_absen']);
 $date2 = strtotime($key['jam_jadwal']);
 ;
-$interval = $date1 - $date2;
-$seconds = $interval % 60;
-$minutes = floor(($interval % 3600) / 60);
-$hours = floor($interval / 3600);
+$minutes = floor(($key['rentan']  % 3600) / 60);
+$hours = floor($key['rentan'] / 3600);
 
 
+if ($hours <= 0 && $minutes <= 15) {
+  $pdf->Cell(21,8, 'tepat waktu',1,1, 'C');
+}else{
   $pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+}
+
 
 $i++;
 }
@@ -261,7 +263,7 @@ $i++;
 
 
 $query = "
- SELECT * FROM absensi
+ SELECT * FROM sec_absen
 	WHERE year(`jam_absen`) =  '$tahun'
 ";
 
@@ -292,13 +294,13 @@ $donor = $this->db->query($query)->result_array();
 
 
 
-   $pdf->SetFont('Arial','B',8);
+  $pdf->SetFont('Arial','B',8);
         $pdf->Cell(7,8,'No. ',1,0, 'C');
          $pdf->Cell(25,8,'Nama',1,0, 'C');
         $pdf->Cell(25,8,'Email',1,0, 'C');
         $pdf->Cell(17.5,8,'Tanggal',1,0, 'C');
         $pdf->Cell(17.5,8,'Jam Absen',1,0, 'C');
-        $pdf->Cell(17.5,8,'Jadwal',1,0, 'C');
+        $pdf->Cell(17.5,8,'Absen',1,0, 'C');
         $pdf->Cell(60,8,'Lokasi',1,0, 'C');
         $pdf->Cell(21,8,'Keterlambatan',1,1, 'C');
 
@@ -311,20 +313,23 @@ foreach ($donor as $key) {
   $pdf->Cell(25,8,$key['email'],1,0, 'B');
   $pdf->Cell(17.5,8,date('d - m -  Y ', strtotime( $key['jam_absen'])),1,0, 'B');
   $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_absen'])),1,0, 'B');
-  $pdf->Cell(17.5,8,date('H:i ', strtotime( $key['jam_jadwal'])),1,0, 'B');
+  $pdf->Cell(17.5,8, $key['jenis_absen'] ,1,0, 'B');
   $pdf->Cell(60,8,$key['lokasi'],1,0, 'C');
 
 
 $date1 = strtotime( $key['jam_absen']);
 $date2 = strtotime($key['jam_jadwal']);
 ;
-$interval = $date1 - $date2;
-$seconds = $interval % 60;
-$minutes = floor(($interval % 3600) / 60);
-$hours = floor($interval / 3600);
+$minutes = floor(($key['rentan']  % 3600) / 60);
+$hours = floor($key['rentan'] / 3600);
 
 
+if ($hours <= 0 && $minutes <= 15) {
+  $pdf->Cell(21,8, 'tepat waktu',1,1, 'C');
+}else{
   $pdf->Cell(21,8, $hours." jam ".$minutes. 'menit',1,1, 'C');
+}
+
 
 $i++;
 }

@@ -52,6 +52,7 @@ public function add_lihat(){
 			$data['title'] = 'Absensi Pekerjaan';
 		$data['user']=$this->db->get_where('user', ['email' =>
 		$this->session->userdata('email')])->row_array();
+		$data['jadwal']=$this->db->get_where('jadwal', ['status' => 'aktif'])->row_array();
 
 
 
@@ -76,8 +77,8 @@ public function add_lihat(){
 				'lokasi' => $this->input->post('lokasi'),
 				'latitude' => $this->input->post('latitude'),
 				'longitude' => $this->input->post('longitude'),
-				'jam_jadwal' => $w->waktu
-			];
+				'jam_jadwal' => $w->waktu,
+				'jenis_absen' => $this->input->post('jenis_absen')			];
 			$this->db->insert('absensi', $data);
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Success Added </div>');
 			redirect('absen');

@@ -1,17 +1,41 @@
+       <?php $waktumasuk = strtotime($jadwal['waktu']); ?>
+       <?php $waktupulang =  strtotime($jadwal['waktu_pulang']); ?>
+       <?php $waktusekarang = time(); ?>
+       <?php $interval = $waktusekarang - $waktumasuk; 
+$seconds = $interval % 60;
+$minutes = floor(($interval % 3600) / 60);
+$hours = floor($interval / 3600);
+
+
+
+       ?>
 
       <div class="modal-header">
-        <h1 class="modal-title" id="newmenumodal">Absen</h1>
-       
-         
+        <h1 class="modal-title" id="newmenumodal">Absen   <?php if($waktumasuk < $waktusekarang && $waktusekarang < $waktupulang)
+         { echo 'Masuk'; }else{echo 'Pulang';} ?></h1>
+
         </button>
       </div>
       <form action="<?php echo base_url('absen/add'); ?>" method="post">
+        
         <div class="row">
             <div class="col-6">
                 
   
         <div class="form-group">
             <label>Nama</label>
+         <?php if($waktumasuk < $waktusekarang && $waktusekarang < $waktupulang)
+         { ?>
+            <input type="hidden" class="form-control" id="jenis_absen" name="jenis_absen"  value="masuk" >
+
+    <?php  } else{ ?>
+
+            <input type="hidden" class="form-control" id="jenis_absen" name="jenis_absen"  value="pulang" >
+     <?php }
+
+         ?>
+
+
         <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama" value="<?php echo $this->session->userdata('name') ?>"required="" readonly>
       </div>
             </div>
@@ -23,7 +47,7 @@
       </div>
             </div>
         </div>
-	   
+       
        <label>Lokasi</label><br>
            <div class="form-group">
         <input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Masukan lokasi" required="" readonly="">

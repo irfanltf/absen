@@ -23,7 +23,7 @@
 			      <th scope="col">No</th>
             <th scope="col">Tanggal</th>
             <th scope="col">Jam Absen</th>
-			      <th scope="col">Jadwal</th>
+			      <th scope="col">Jenis Absen</th>
 			      <th scope="col">Lokasi</th>
             <th scope="col">Keterlambatan</th>
     
@@ -36,7 +36,7 @@
 			      <th scope="row"><?php echo $i; ?></th>
             <td><?php echo date('d - m -  Y ', strtotime( $m['jam_absen'])); ?></td>
             <td><?php echo date('H:i ', strtotime( $m['jam_absen'])); ?></td>
-			      <td><?php echo date('H:i ', strtotime( $m['jam_jadwal'])); ?></td>
+			      <td><?php echo $m['jenis_absen']; ?></td>
 			      <td><?php echo $m['lokasi']; ?></td>
 			      
 			      <td>
@@ -50,7 +50,7 @@ $date2 = strtotime($m['jam_jadwal']);
 $minutes = floor(($m['rentan']  % 3600) / 60);
 $hours = floor($m['rentan'] / 3600);
 
-if ($hours <= 0) {
+if ($hours <= 0 && $minutes <= 15) {
   echo "tepat waktu";
 }else{
 

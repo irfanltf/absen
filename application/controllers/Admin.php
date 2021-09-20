@@ -98,6 +98,7 @@ public function add_run()
 	}
 
 
+
 	public function del($id){
 
 	$this->db->where('id', $id);
@@ -319,6 +320,51 @@ public function jadwal()
 		$this->db->delete('user_role');
 		redirect('admin/role');
 
+	}	public function deljadwal($id)
+	{
+
+		$this->db->where('id', $id);
+		$this->db->delete('jadwal');
+		redirect('admin/jadwal');
+
 	}
 	
+	public function add_jadwal()
+	{
+	
+
+		$this->form_validation->set_rules('waktu', 'Waktu Masuk', 'required|trim');
+		$this->form_validation->set_rules('waktu_pulang', 'Waktu Pulang', 'required|trim');
+
+
+
+		if( $this->form_validation->run()==false ){
+		
+		$data['title'] = 'Jadwal';
+		$data['user']=$this->db->get_where('user', ['email' =>
+		$this->session->userdata('email')])->row_array();
+
+		$data['waktu'] = $this->db->get('jadwal')->result_array();
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar', $data);
+		$this->load->view('templates/topbar', $data);
+		$this->load->view('admin/jadwal', $data);
+		$this->load->view('templates/footer');
+		} else{
+	$data = [
+
+				'waktu' => htmlspecialchars($this->input->post('waktu', true)),
+				'waktu_pulang' => htmlspecialchars($this->input->post('waktu_pulang', true)),
+				'status' => 'nonaktif'
+	
+			];
+
+		
+			$this->db->insert('jadwal', $data);
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Success Created</div>');
+		redirect('admin/jadwal');
+
+	}
+	}
 }
